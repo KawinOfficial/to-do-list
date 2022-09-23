@@ -8,6 +8,12 @@ html {
   padding: 3px;
   border-radius: 5px;
   width: 100%;
+  padding-left: 8px;
+}
+
+.control::placeholder {
+  color: #ddd;
+  font-size: small;
 }
 
 .card {
@@ -46,6 +52,9 @@ html {
 .button:hover {
   cursor: pointer;
   background-color: #6366f1;
+}
+.button:active {
+  background-color: #1e3a8a;
 }
 
 .button:disabled {

@@ -1,4 +1,8 @@
 export default {
+  serverMiddleware: ['~/api/api.js'],
+  server: {
+    port: 3000,
+  },
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
     title: 'to-do-list',
@@ -38,6 +42,7 @@ export default {
 
     '@nuxtjs/composition-api/module',
     '@nuxtjs/fontawesome',
+    '@nuxtjs/auth',
   ],
 
   fontawesome: {
@@ -56,7 +61,8 @@ export default {
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
   axios: {
     // Workaround to avoid enforcing hard-coded localhost:3000: https://github.com/nuxt-community/axios-module/issues/308
-    baseURL: 'https://kawin-to-do-list.hasura.app/v1/graphql',
+    // baseURL: 'https://kawin-to-do-list.hasura.app/v1/graphql',
+    baseURL: 'http://localhost:3000/api',
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

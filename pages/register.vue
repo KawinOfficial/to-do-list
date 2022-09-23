@@ -2,8 +2,7 @@
   <div class="container p-5">
     <HeadTitle />
     <div class="card px-10 py-5 rounded-2xl m-5 w-auto md:w-96">
-      <p class="text-sm">Login to start your session</p>
-
+      <p class="text-sm">Create Account</p>
       <form class="my-5" @submit="onSubmit">
         <p class="font-bold text-left">Username</p>
         <input
@@ -20,10 +19,25 @@
           class="control mb-5"
           placeholder="Type your password"
         />
+        <p class="font-bold text-left">Confirm Password</p>
+        <input
+          v-model="confirmPass"
+          type="password"
+          class="control mb-5"
+          placeholder="Confirm your password"
+        />
 
         <div class="flex justify-between align-center">
-          <nuxt-link to="/register" class="link">Create Account</nuxt-link>
-          <button type="submit" class="btn button">Sign in</button>
+          <nuxt-link to="/" class="link">
+            <font-awesome-icon :icon="['fas', 'arrow-left']" class="mr-1" />
+            Back to sign in</nuxt-link
+          >
+          <input
+            type="submit"
+            value="Sign up"
+            class="btn button"
+            :disabled="password != confirmPass || password == ''"
+          />
         </div>
       </form>
     </div>
@@ -35,21 +49,22 @@ import {
   defineComponent,
   reactive,
   toRefs,
-  useRouter,
   useContext,
+  useRouter,
 } from '@nuxtjs/composition-api'
 import swal from 'sweetalert2'
 import HeadTitle from '~/components/HeadTitle.vue'
 
 export default defineComponent({
-  name: 'IndexPage',
+  name: 'RegisPage',
   components: { HeadTitle },
   setup() {
     const router = useRouter()
-    const { $axios, store } = useContext()
+    const { $axios } = useContext()
     const state = reactive({
       username: '',
       password: '',
+      confirmPass: '',
     })
 
     const onSubmit = (e) => {
@@ -58,31 +73,26 @@ export default defineComponent({
         onOpen: () => {
           swal.showLoading()
         },
-        title: 'Loading...',
+        title: 'Sign up in progress.',
         allowEscapeKey: false,
         allowOutsideClick: false,
         showConfirmButton: false,
       })
 
-      $axios.$post('/signin', state).then((result) => {
-        swal.close()
-
+      $axios.$post('/register', state).then((result) => {
         if (result.state) {
-          localStorage.setItem('token', result.token)
-          localStorage.setItem('userId', result.id)
-          store.commit('setToken', result.token)
           swal({
             type: 'success',
-            title: 'Sign in success',
+            title: 'Sign up completed. Please sign in.',
             showConfirmButton: false,
             timer: 2000,
-          }).then(() => router.push('/listPage'))
+          }).then(() => router.push('/'))
         } else {
           swal({
             type: 'error',
             title: result.msg,
             showConfirmButton: false,
-            timer: 6000,
+            timer: 4000,
           })
         }
       })
